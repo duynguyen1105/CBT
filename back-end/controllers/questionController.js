@@ -1,5 +1,6 @@
 const Workspace = require('../models/Workspace')
 const Question = require('../models/Question')
+const ShortId = require('id-shorter')
 
 exports.getAllQuestionsOfWorkspace = async (req, res, next) => {
   try {
@@ -23,6 +24,7 @@ exports.createQuestion = async (req, res, next) => {
     const { _id } = await Workspace.findOne({ domain: workspaceDomain })
     const question = await Question.create({
       ...req.body,
+      questionId: ShortId().encode(question._id),
       workspace: _id,
     })
 
