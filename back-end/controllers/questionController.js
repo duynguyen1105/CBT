@@ -7,10 +7,27 @@ exports.getAllQuestionsOfWorkspace = async (req, res, next) => {
     const { workspaceDomain } = req.params
     const { _id } = await Workspace.findOne({ domain: workspaceDomain })
     const allQuestions = await Question.find({ workspace: _id })
+    const formattedQuestions = allQuestions.map(
+      ({
+        _id: questionId,
+        questionTitle,
+        status,
+        createdAt,
+        category,
+        questionType,
+      }) => ({
+        _id: questionId,
+        questionTitle,
+        status,
+        createdAt,
+        category,
+        questionType,
+      })
+    )
     res.status(200).json({
       status: 'Success',
       results: allQuestions.length,
-      data: { allQuestions },
+      data: { allQuestions: formattedQuestions },
     })
   } catch (error) {
     console.log(error)
@@ -22,9 +39,9 @@ exports.createQuestion = async (req, res, next) => {
   try {
     const { workspaceDomain } = req.params
     const { _id } = await Workspace.findOne({ domain: workspaceDomain })
+
     const question = await Question.create({
       ...req.body,
-      questionId: ShortId().encode(question._id),
       workspace: _id,
     })
 

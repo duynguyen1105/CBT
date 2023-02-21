@@ -1,8 +1,4 @@
+import AppAPIInstance from './configCBTApi'
+import { setToken } from './configCBTApi'
 
-import AppAPIInstance from './configCBTApi';
-import { setToken } from './configCBTApi';
-
-export {
-  AppAPIInstance,
-  setToken
-}
+export { AppAPIInstance, setToken }
