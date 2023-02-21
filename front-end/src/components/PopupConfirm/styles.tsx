@@ -1,52 +1,52 @@
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles(() =>
   createStyles({
     container: {
-      '& > div > div': {
+      "& > div > div": {
         borderRadius: 10,
       },
     },
     containerDialog: {
-      padding: '40px',
+      padding: "40px",
     },
     containerContent: {
-      display: 'grid',
-      textAlign: 'center',
-      '& >div:nth-child(2)': {
+      display: "grid",
+      textAlign: "center",
+      "& >div:nth-child(2)": {
         padding: 0,
-        '&>h2': {
+        "&>h2": {
           fontSize: 30,
-          textAlign: 'center',
-          color: '#304D95',
-          fontWeight: 'bold',
+          textAlign: "center",
+          color: "#304D95",
+          fontWeight: "bold",
         },
       },
-      '& >div:nth-child(3)': {
-        '&>p': {
+      "& >div:nth-child(3)": {
+        "&>p": {
           fontSize: 18,
-          textAlign: 'center',
-          color: '#304D95',
+          textAlign: "center",
+          color: "#304D95",
           fontWeight: 300,
         },
       },
     },
     containerButton: {
-      '& button': {
-        color: '#000000',
-        fontWeight: 'bold',
+      "& button": {
+        color: "#000000",
+        fontWeight: "bold",
         padding: "15px 80px",
-        textTransform: 'capitalize',
-        borderRadius: '28px',
+        textTransform: "capitalize",
+        borderRadius: "28px",
         marginRight: 7,
-        width: '208px',
-        height: '46px',
+        width: "208px",
+        height: "46px",
         "&:hover": {
           borderRadius: 40,
         },
-        '& span': {
-          fontSize: 14, 
-        }
+        "& span": {
+          fontSize: 14,
+        },
       },
     },
   })

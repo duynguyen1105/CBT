@@ -1,24 +1,25 @@
-import 'react-hot-loader';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import { createRoot } from "react-dom/client";
+import "react-hot-loader";
+import { Provider } from "react-redux";
 
-import { configureStore, history } from 'store/configureStore';
-import { rootSaga } from 'store/sagas';
-import 'index.css';
-import App from 'App';
-import * as serviceWorker from './serviceWorker';
-import sagaMiddleware from 'store/middlewares/saga';
+import App from "App";
+import "index.css";
+import { configureStore, history } from "store/configureStore";
+import sagaMiddleware from "store/middlewares/saga";
+import { rootSaga } from "store/sagas";
+import * as serviceWorker from "./serviceWorker";
 
 const initialState = {};
 const store = configureStore(initialState);
 
 sagaMiddleware.run(rootSaga);
 
-ReactDOM.render(
+const container = document.getElementById("root");
+const root = createRoot(container!); // createRoot(container!) if you use TypeScript
+root.render(
   <Provider store={store}>
     <App history={history} />
-  </Provider>,
-  document.getElementById('root')
+  </Provider>
 );
 
 serviceWorker.unregister();

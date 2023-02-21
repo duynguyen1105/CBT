@@ -14,6 +14,7 @@ import * as authenticationServices from 'services/authentication';
 import * as actionGlobal from 'store/reducers/global/actionTypes';
 import { ACCESS_TOKEN } from 'config/constants';
 import { setToken } from 'services/configApi';
+import { parseJwt } from "helpers";
 
 // import { FormLoginSocial } from 'models/authentication';
 // import { TypeLoginSocial } from './models';
@@ -44,15 +45,20 @@ const Login = () => {
     await authenticationServices
       .login(values)
       .then((data) => {
-        // const dataToken = parseJwt(res.data.token)
+        
+        // const dataToken = parseJwt(data.data.token)
+        console.log(data.data.token);
+
         localStorage.setItem(ACCESS_TOKEN, data.data.token);
         setToken(data.data.token);
         history.push(routes.workspace);
       })
-      .catch(() => {
-        localStorage.setItem(ACCESS_TOKEN, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWJiNmJlN2M0ZjE5NzllNWM5NjMzYjYiLCJpYXQiOjE2NTMwNjk1NTJ9.IFOgEZzHkYek7Qs8vB8_pocQBICvqzOoPL2t2QcnGgg");
-        setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWJiNmJlN2M0ZjE5NzllNWM5NjMzYjYiLCJpYXQiOjE2NTMwNjk1NTJ9.IFOgEZzHkYek7Qs8vB8_pocQBICvqzOoPL2t2QcnGgg");
-        history.push(routes.workspace);
+      .catch((e) => {
+        console.log(e);
+        
+        // localStorage.setItem(ACCESS_TOKEN, dataToken);
+        // setToken(dataToken);
+        // history.push(routes.workspace);
         // setOpen(true)
       })
       .finally(() => {

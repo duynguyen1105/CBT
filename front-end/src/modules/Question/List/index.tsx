@@ -13,17 +13,22 @@ import Paginations from "components/Pagination"
 import PopupConfirm from "components/PopupConfirm"
 import QuestionLabelStatus from "components/QuestionLabelStatus"
 import Images from "config/images"
-import { checkTypeSort, getNewSort } from 'helpers'
+import { checkTypeSort, formatDate, getNewSort } from 'helpers'
 import * as _ from 'lodash'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from "react-router-dom"
 import { routes } from 'routers/routes'
 import { reducerType } from 'store/reducers'
 import { IQuestionState } from 'store/reducers/question'
 import * as actionsQuestion from 'store/reducers/question/actionTypes'
-import { dataList, headerOption } from './models'
+import {  headerOption } from './models'
 import useStyles from "./styles"
+// import actionGlobal from "store/"
+import { Question } from "models/question"
+import * as questionServices from 'services/question';
+import * as actionGlobal from 'store/reducers/global/actionTypes';
+import { listQuestionCategory, listQuestionType } from "models/question"
 
 const QuestionList = () => {
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
@@ -33,32 +38,34 @@ const QuestionList = () => {
 
   const questionProps: IQuestionState = useSelector((state: reducerType) => state.question);
 
-  //const [dataList, setDataList] = useState<Question[]>([]);
+  const [dataList, setDataList] = useState<Question[]>([]);
   const [selected, setSelected] = useState<readonly string[]>([]);
-  //const [total, setTotal] = useState(dataList.length);
+  const [total, setTotal] = useState(dataList.length);
 
-  // useEffect(() => {
-  //   getDataList();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [questionProps]);
+  useEffect(() => {
+    getDataList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [questionProps]);
 
-  // const getDataList = async () => {
-  //   dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true })
-  //   await questionServices.getListQuestion(questionProps.query)
-  //     .then(r => {
-  //       const maxPage = Math.ceil(r.total / questionProps.query.pageSize)
-  //       if (maxPage < questionProps.query.pageIndex) {
-  //         handleChangePage(maxPage)
-  //         return null
-  //       }
-  //       setDataList(r.data)
-  //       setTotal(r.totalCount);
-  //     })
-  //     .catch(e => {
-  //       dispatch({ type: actionGlobal.SET_MESSAGE_ERROR, payload: e.message })
-  //     })
-  //     .finally(() => dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false }))
-  // }
+  const getDataList = async () => {
+    dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true })
+    await questionServices.getListQuestion(questionProps.query)
+      .then(r => {
+        console.log(r);
+        
+        const maxPage = Math.ceil(r.total / questionProps.query.pageSize)
+        if (maxPage < questionProps.query.pageIndex) {
+          handleChangePage(maxPage)
+          return null
+        }
+        setDataList(r.data.allQuestions)
+        setTotal(r.totalCount);
+      })
+      .catch(e => {
+        dispatch({ type: actionGlobal.SET_MESSAGE_ERROR, payload: e.message })
+      })
+      .finally(() => dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false }))
+  }
 
   const handleChangePage = (page: number) => {
     const { query } = { ...questionProps };
@@ -93,7 +100,7 @@ const QuestionList = () => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = dataList.map((n) => n.questionId);
+      const newSelecteds = dataList.map((n) => n._id);
       setSelected(newSelecteds);
       return;
     }
@@ -117,8 +124,8 @@ const QuestionList = () => {
     setSelected(newSelected);
   };
 
-  const handleEditQuestion = (QuestionId: string) => () => {
-    history.push(routes.question.edit.replace(':QuestionId', QuestionId))
+  const handleEditQuestion = (_id: string) => () => {
+    history.push(routes.question.edit.replace(':questionId', _id))
   }
   const handleOpenDeleteDialog = () => {
     setDeleteOpen(true)
@@ -135,7 +142,7 @@ const QuestionList = () => {
   }
 
   const handleClickSuccessDelete = () => {
-    // setDeleteOpen(false);
+    setDeleteOpen(false);
     // dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true })
     // questionServices.deleteByIds([...selected])
     //   .then(r => {
@@ -154,6 +161,12 @@ const QuestionList = () => {
     setTimeout(() => setDeleteOpen(true), 100)
   }
 
+  const getQuestionCategoryLabel = (categoryValue: string) => {
+    return listQuestionCategory?.find(e => e.value === categoryValue)?.label ?? ""
+  }
+  const getQuestionTypeLabel = (typeValue: string) => {
+    return listQuestionType?.find(e => e.value === typeValue)?.label ?? ""
+  }
   return (
     <Grid container>
       <Grid container className={classes.container}>
@@ -228,33 +241,33 @@ const QuestionList = () => {
             </TableRow>
           </TableHead>
           <TableBody className={classes.tableBody}>
-            {dataList && dataList.map((row, index) => {
-              const isItemSelected = isSelected(row.questionId);
+            {dataList?.length > 0 && dataList?.map((row, index) => {
+              const isItemSelected = isSelected(row._id);
               return (
                 <TableRow
                   key={index}
-                  onClick={() => handleChangeCheckbox(row.questionId)}
+                  onClick={() => handleChangeCheckbox(row._id)}
                 >
                   <TableCell align="center" style={{ width: 58 }}>
                     <Checkbox
                       checked={isItemSelected}
                       className="custom-color-default" />
                   </TableCell>
-                  <TableCell >{row.questionId}</TableCell>
-                  <TableCell >{row.title}</TableCell>
-                  <TableCell >{row.questionType}</TableCell>
-                  <TableCell>{row.creationTime}</TableCell>
-                  <TableCell>{row.questionCategory}</TableCell>
+                  <TableCell >{row._id}</TableCell>
+                  <TableCell >{row.questionTitle}</TableCell>
+                  <TableCell >{getQuestionTypeLabel(row.questionType)}</TableCell>
+                  <TableCell>{formatDate(row.createdAt)}</TableCell>
+                  <TableCell>{getQuestionCategoryLabel(row.category)}</TableCell>
                   <TableCell>
-                    <QuestionLabelStatus typeStatus={row.statusName} />
+                    <QuestionLabelStatus typeStatus={row.status} />
                   </TableCell>
                   <TableCell align="center" onClick={e => e.stopPropagation()}>
                     <ButtonAction
                       btnType="edit"
-                      onClick={handleEditQuestion(row.questionId)} />
+                      onClick={handleEditQuestion(row._id)} />
                     <ButtonAction
                       btnType="delete"
-                      onClick={handleClickDelete(row.questionId)} />
+                      onClick={handleClickDelete(row._id)} />
                   </TableCell>
                 </TableRow>
               )

@@ -1,9 +1,9 @@
 import { SvgIcon } from "@material-ui/core";
-import { ReactComponent as CBTicFileText } from 'asset/img/cbt-ic-filetext.svg';
-import { ReactComponent as CBTicGrid4 } from 'asset/img/cbt-ic-grid4.svg';
-import { ReactComponent as CBTicHouse } from 'asset/img/cbt-ic-house.svg';
-import { ReactComponent as CBTicStack } from 'asset/img/cbt-ic-stack.svg';
-import { ReactComponent as CBTicUsers } from 'asset/img/cbt-ic-users.svg';
+import { ReactComponent as CBTicFileText } from "asset/img/cbt-ic-filetext.svg";
+import { ReactComponent as CBTicGrid4 } from "asset/img/cbt-ic-grid4.svg";
+import { ReactComponent as CBTicHouse } from "asset/img/cbt-ic-house.svg";
+import { ReactComponent as CBTicStack } from "asset/img/cbt-ic-stack.svg";
+import { ReactComponent as CBTicUsers } from "asset/img/cbt-ic-users.svg";
 import { routes } from "routers/routes";
 
 export const navs = [
@@ -33,4 +33,3 @@ export const navs = [
   //   path: routes.class.default,
   // }
 ];
-

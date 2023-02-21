@@ -1,9 +1,9 @@
 import clsx from "clsx";
-import { QuestionStatus } from "models/question";
+import { QuestionStatusValue } from "models/question";
 import useStyles from "./styles";
 
 interface QuestionLabelStatusProps {
-  typeStatus: string
+  typeStatus: string;
 }
 
 const QuestionLabelStatus = (props: QuestionLabelStatusProps) => {
@@ -11,16 +11,9 @@ const QuestionLabelStatus = (props: QuestionLabelStatusProps) => {
   const { typeStatus, ...rest } = props;
 
   return (
-    <div
-      className={clsx(
-        typeStatus === QuestionStatus.Draft ? classes.circleYellow : "",
-        typeStatus === QuestionStatus.Published ? classes.circleGreen : "",
-      )
-      }
-      {...rest}
-    >
+    <div className={clsx(typeStatus === QuestionStatusValue.Draft ? classes.circleYellow : "", typeStatus === QuestionStatusValue.Published ? classes.circleGreen : "")} {...rest}>
       {typeStatus}
-    </div >
+    </div>
   );
 };
 export default QuestionLabelStatus;
