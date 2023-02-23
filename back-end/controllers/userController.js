@@ -3,13 +3,41 @@ const User = require('../models/User')
 
 exports.getUsersOfWorkspace = async (req, res, next) => {
   try {
+    const page = parseInt(req.query.page) || 1
+    const perPage = parseInt(req.query.limit) || 10
+    const search = req.query.search || ''
+    const sort = req.query.sort ? req.query.sort.split(',') : ['_id']
+    const sortBy = {}
+    sortBy[sort[0]] = sort[1] ?? 'asc'
+
     const { userId } = req.user
     const { workspace } = await User.findById(userId)
-    const allUsers = await User.find({ workspace: workspace })
+    const allUsers = await User.find({
+      workspace: workspace,
+      $or: [
+        { name: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+      ],
+    })
+      .sort(sortBy)
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+
+    const total = await User.countDocuments({
+      workspace: workspace,
+      $or: [
+        { name: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+      ],
+    })
+
     res.status(200).json({
       status: 'Success',
       results: allUsers.length,
       data: { allUsers },
+      total,
+      current: page,
+      pages: Math.ceil(total / perPage),
     })
   } catch (error) {
     console.log(error)

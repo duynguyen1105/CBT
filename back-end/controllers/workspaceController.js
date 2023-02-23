@@ -1,17 +1,35 @@
 const Workspace = require('../models/Workspace')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
 const User = require('../models/User')
 
 exports.getAllWorkspaces = async (req, res, next) => {
   try {
-    const allWorkspaces = await Workspace.find({})
+    const page = parseInt(req.query.page) || 1
+    const perPage = parseInt(req.query.limit) || 10
+    const search = req.query.search || ''
+    const sort = req.query.sort ? req.query.sort.split(',') : ['_id']
+    const sortBy = {}
+    sortBy[sort[0]] = sort[1] ?? 'asc'
+
+    const allWorkspaces = await Workspace.find({
+      name: { $regex: search, $options: 'i' },
+    })
       .populate('adminWorkspace')
       .populate('ownerWorkspace')
+      .sort(sortBy)
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+
+    const total = await Workspace.countDocuments({
+      name: { $regex: search, $options: 'i' },
+    })
+
     res.status(200).json({
       status: 'Success',
       results: allWorkspaces.length,
       data: { allWorkspaces },
+      total,
+      current: page,
+      pages: Math.ceil(total / perPage),
     })
   } catch (error) {
     console.log(error)
