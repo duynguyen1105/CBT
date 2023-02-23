@@ -4,9 +4,29 @@ const ShortId = require('id-shorter')
 
 exports.getAllQuestionsOfWorkspace = async (req, res, next) => {
   try {
+    const page = parseInt(req.query.page) || 1
+    const perPage = parseInt(req.query.limit) || 10
+    const search = req.query.search || ''
+    const sort = req.query.sort ? req.query.sort.split(',') : ['_id']
+    const sortBy = {}
+    sortBy[sort[0]] = sort[1] ?? 'asc'
+
     const { workspaceDomain } = req.params
     const { _id } = await Workspace.findOne({ domain: workspaceDomain })
-    const allQuestions = await Question.find({ workspace: _id })
+
+    const allQuestions = await Question.find({
+      workspace: _id,
+      questionTitle: { $regex: search, $options: 'i' },
+    })
+      .sort(sortBy)
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+
+    const total = await Question.countDocuments({
+      workspace: _id,
+      questionTitle: { $regex: search, $options: 'i' },
+    })
+
     const formattedQuestions = allQuestions.map(
       ({
         _id: questionId,
@@ -28,6 +48,9 @@ exports.getAllQuestionsOfWorkspace = async (req, res, next) => {
       status: 'Success',
       results: allQuestions.length,
       data: { allQuestions: formattedQuestions },
+      total,
+      current: page,
+      pages: Math.ceil(total / perPage),
     })
   } catch (error) {
     console.log(error)
