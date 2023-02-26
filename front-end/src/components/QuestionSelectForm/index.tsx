@@ -1,14 +1,9 @@
-import { Grid } from '@material-ui/core';
-import images from 'config/images';
-import Dropdown from 'modules/Question/Create/components/Dropdown';
-import Essay from 'modules/Question/Create/components/Essay';
-import FillInGaps from 'modules/Question/Create/components/FillInGaps';
-import Matching from 'modules/Question/Create/components/Matching';
-import SelectMany from 'modules/Question/Create/components/SelectMany';
-import SelectOne from 'modules/Question/Create/components/SelectOne';
-import { useState } from 'react';
+import { Grid } from "@material-ui/core";
+import images from "config/images";
+import Essay from "modules/Question/Create/components/Essay";
+import { useState } from "react";
 import Select, { components } from "react-select";
-import useStyles, { customSelectStyle } from './styles';
+import useStyles, { customSelectStyle } from "./styles";
 
 export interface CustomOption {
   readonly value: number;
@@ -23,10 +18,10 @@ const questionTypeOption: CustomOption[] = [
   { value: 3, label: "Dropdown - Select", icon: images.CBTicTableBlack },
   { value: 4, label: "Fill in the gaps", icon: images.CBTicRowsBlack },
   { value: 5, label: "Essay", icon: images.CBTicPencilBlack },
-]
+];
 
 const { Option, SingleValue } = components;
-const CustomSingleValue = props => {
+const CustomSingleValue = (props) => {
   const classes = useStyles();
   return (
     <SingleValue {...props}>
@@ -35,10 +30,10 @@ const CustomSingleValue = props => {
         <p>{props.data.label}</p>
       </div>
     </SingleValue>
-  )
-}
+  );
+};
 
-const CustomOptions = props => {
+const CustomOptions = (props) => {
   const classes = useStyles();
   return (
     <Option {...props}>
@@ -47,43 +42,22 @@ const CustomOptions = props => {
         <p>{props.data.label}</p>
       </div>
     </Option>
-  )
+  );
 };
 
 const renderQuestion = (type: number) => {
   switch (type) {
-    case 0:
-      return <SelectOne
-        preview={false}
-        onClosePreview={() => { }}
-      />;
-    case 1:
-      return <SelectMany
-        preview={false}
-        onClosePreview={() => { }}
-      />;
-    case 2:
-      return <Matching
-        preview={false}
-        onClosePreview={() => { }}
-      />;
-    case 3:
-      return <Dropdown />;
-    case 4:
-      return <FillInGaps />;
-    case 5:
-      return <Essay />;
     default:
       return null;
   }
-}
+};
 const QuestionSelectForm = () => {
   const classes = useStyles();
-  const [type, setType] = useState(0)
+  const [type, setType] = useState(0);
 
   const handleChangeQuestionType = (e) => {
-    setType(e.value)
-  }
+    setType(e.value);
+  };
   return (
     <Grid container className={classes.select}>
       <Select
@@ -93,19 +67,16 @@ const QuestionSelectForm = () => {
         components={{
           IndicatorSeparator: null,
           Option: CustomOptions,
-          SingleValue: CustomSingleValue
+          SingleValue: CustomSingleValue,
         }}
         options={questionTypeOption}
         styles={customSelectStyle}
         onChange={handleChangeQuestionType}
         defaultValue={questionTypeOption[0]}
       />
-      <div className={classes.questionContainer}>
-        {renderQuestion(type)}
-      </div>
-
+      <div className={classes.questionContainer}>{renderQuestion(type)}</div>
     </Grid>
-  )
+  );
 };
 
 export default QuestionSelectForm;

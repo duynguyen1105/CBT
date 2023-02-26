@@ -1,35 +1,36 @@
-import { MatchingAnswer } from "modules/Question/Create/components/Matching/models";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import EditorToolbar, { createAnswer, formats, redoChange, removeAnswer, undoChange } from './EditorToolbar';
-import './styles.css';
+import { Answer } from "modules/Question/Create/models";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import EditorToolbar, { createAnswer, formats, redoChange, removeAnswer, undoChange } from "./EditorToolbar";
+import "./styles.css";
 interface EditorProps {
   placeholder?: string;
   onChangeQuestion: any;
   question: any;
-  className: string,
-  onChangeAnswer: Function,
-  answer: MatchingAnswer[]
+  className: string;
+  onChangeAnswer: Function;
+  answer: Answer[];
 }
 
 export const Editor = (props: EditorProps) => {
-  const { onChangeQuestion, question, placeholder, className, answer, onChangeAnswer } = props
+  const { onChangeQuestion, question, placeholder, className, answer, onChangeAnswer } = props;
 
   const handleChange = (value) => {
     onChangeQuestion(value);
-    const ans = [...value.matchAll('<ans>(.*?)</ans>')].map(e => e[1]) as string[];
+    const ans = [...value.matchAll("<ans>(.*?)</ans>")].map((e) => e[1]) as string[];
     const newAnswer = ans.map((e, index) => {
-      if (answer[index]) return { ...answer[index], answerContent: e, isCorrect: true }
-      else return {
-        displayOrder: index,
-        answerContent: e,
-        score: "0",
-        penaltyScore: "0",
-        isCorrect: true,
-        feedback: ""
-      }
-    })
-    onChangeAnswer(newAnswer)
+      if (answer[index]) return { ...answer[index], answerContent: e, isCorrect: true };
+      else
+        return {
+          displayOrder: index,
+          answerContent: e,
+          score: "0",
+          penaltyScore: "0",
+          isCorrect: true,
+          feedback: "",
+        };
+    });
+    onChangeAnswer(newAnswer);
   };
 
   const modules = {
@@ -39,21 +40,14 @@ export const Editor = (props: EditorProps) => {
         undo: undoChange,
         redo: redoChange,
         createAnswer: createAnswer,
-        removeAnswer: removeAnswer
+        removeAnswer: removeAnswer,
       },
     },
   };
   return (
-    <div className='text-editor'>
+    <div className="text-editor">
       <EditorToolbar className={className} />
-      <ReactQuill
-        theme='snow'
-        value={question}
-        onChange={handleChange}
-        placeholder={placeholder}
-        modules={modules}
-        formats={formats}
-      />
+      <ReactQuill theme="snow" value={question} onChange={handleChange} placeholder={placeholder} modules={modules} formats={formats} preserveWhitespace />
     </div>
   );
 };
