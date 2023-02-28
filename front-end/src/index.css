@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'Nunito';
-  src: url('./asset/fonts/Nunito-VariableFont_wght.ttf');
+  font-family: "Nunito";
+  src: url("./asset/fonts/Nunito-VariableFont_wght.ttf");
 }
 body {
   margin: 0;
@@ -12,7 +12,7 @@ body {
 }
 
 body * {
-  font-family: 'Nunito', sans-serif !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 #root {
@@ -23,7 +23,7 @@ body * {
 }
 
 #root * {
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
 }
 
 input:-internal-autofill-selected {
@@ -33,7 +33,9 @@ input:-internal-autofill-selected {
 button.Mui-disabled {
   opacity: 0.3;
 }
-
+p {
+  margin: 0;
+}
 .deAlign {
   display: flex;
   align-items: center;

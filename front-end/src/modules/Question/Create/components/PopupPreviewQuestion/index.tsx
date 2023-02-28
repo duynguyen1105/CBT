@@ -2,6 +2,7 @@ import { Dialog } from "@material-ui/core";
 import { TypeQuestionValue } from "models/question";
 import { Question } from "../../models";
 import DropdownSelectPreview from "./DropdownSelectPreview";
+import FillInTheGapPreview from "./FillInTheGapPreview";
 import MatchingPreview from "./MatchingPreview";
 import SelectManyPreview from "./SelectManyPreview";
 import SelectOnePreview from "./SelectOnePreview";
@@ -28,7 +29,7 @@ const PopupPreviewQuestion = (props: PopupPreviewQuestionProps) => {
       case TypeQuestionValue.DropdownSelect:
         return <DropdownSelectPreview question={question} />;
       case TypeQuestionValue.FillInTheGaps:
-        return;
+        return <FillInTheGapPreview question={question} />;
       case TypeQuestionValue.Essay:
         return;
       default:

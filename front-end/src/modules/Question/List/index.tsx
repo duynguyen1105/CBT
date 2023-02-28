@@ -20,7 +20,6 @@ import { IQuestionState } from "store/reducers/question";
 import * as actionsQuestion from "store/reducers/question/actionTypes";
 import { headerOption } from "./models";
 import useStyles from "./styles";
-// import actionGlobal from "store/"
 import { Question } from "models/question";
 import * as questionServices from "services/question";
 import * as actionGlobal from "store/reducers/global/actionTypes";
@@ -48,8 +47,6 @@ const QuestionList = () => {
     await questionServices
       .getListQuestion(questionProps.query)
       .then((r) => {
-        console.log(r);
-
         const maxPage = Math.ceil(r.total / questionProps.query.pageSize);
         if (maxPage < questionProps.query.pageIndex) {
           handleChangePage(maxPage);

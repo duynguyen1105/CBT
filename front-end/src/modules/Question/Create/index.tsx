@@ -161,8 +161,6 @@ const CreateQuestion = () => {
     setChangeType(undefined);
   };
 
-  console.log(question);
-
   return (
     <Grid container className={classes.container}>
       <QuestionTypeSelect type={question.questionType} onChange={handleChangeQuestionType} />
@@ -239,11 +237,13 @@ const CreateQuestion = () => {
                                       onChange={(value) => handleChangeAnswerContent(index, "answerContent", value)}
                                     />
                                   ) : !row.isCorrect ? (
-                                    <InputsRichtext
-                                      name={`answer-${index}`}
-                                      className={`answer-content-${index}`}
+                                    <TextField
+                                      fullWidth
+                                      InputProps={{
+                                        disableUnderline: true,
+                                      }}
                                       value={row.answerContent}
-                                      onChange={(value) => handleChangeAnswerContent(index, "answerContent", value)}
+                                      onChange={(event) => handleChangeAnswerContent(index, "answerContent", event.target.value)}
                                     />
                                   ) : (
                                     <p>{row.answerContent}</p>
@@ -326,7 +326,9 @@ const CreateQuestion = () => {
                     </Grid>
                   </Grid>
                 )}
-                <ButtonsOutline className={classes.moreBtn} children="More Option" icon={Images.CBTicPlusCircleGreen} placementIcon={true} onClick={handleAddAnswer} />
+                {question.questionType !== TypeQuestionValue.FillInTheGaps && question.questionType !== TypeQuestionValue.Essay && (
+                  <ButtonsOutline className={classes.moreBtn} children="More Option" icon={Images.CBTicPlusCircleGreen} placementIcon={true} onClick={handleAddAnswer} />
+                )}
                 {openEdit && <PopupEditFeedback answer={question.answers[answerId]} open={openEdit} onClickCancel={() => setOpenEdit(false)} onClickSuccess={handleChangeFeedback} />}
                 <PopupPreviewQuestion open={preview} question={question} onClose={handleClosePreview} />
               </Grid>

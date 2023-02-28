@@ -2,10 +2,11 @@ import { createStyles, makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles(() =>
   createStyles({
-    selectAnswer: {
+    inputAnswer: {
       margin: "0 10px",
-      "& > .MuiSelect-outlined.MuiSelect-outlined": {
-        padding: "10px 32px 10px 10px",
+      "& > div > input": {
+        padding: "10px",
+        width: "100px",
       },
     },
     container: {

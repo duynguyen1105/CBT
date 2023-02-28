@@ -1,14 +1,14 @@
-import { Grid, MenuItem, Select, Typography } from "@material-ui/core";
+import { Grid, TextField, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import JsxParser from "react-jsx-parser";
 import { Question } from "../../../models";
 import useStyles from "./styles";
 
-interface DropdownSelectPreviewProps {
+interface FillInTheGapPreviewProps {
   question: Question;
 }
 
-const DropdownSelectPreview = (props: DropdownSelectPreviewProps) => {
+const FillInTheGapPreview = (props: FillInTheGapPreviewProps) => {
   const { question } = props;
   const classes = useStyles();
   const [showFeedback, setShowFeedback] = useState(false);
@@ -16,15 +16,11 @@ const DropdownSelectPreview = (props: DropdownSelectPreviewProps) => {
   // const [listsAnswer, setListAnswer] = useState([{}]);
 
   useEffect(() => {
-    const lists = question.answers.map((e) => ({ value: e.answerContent, label: e.answerContent }));
+    // const lists = question.answers.map((e) => ({ value: e.answerContent, label: e.answerContent }));
     // setListAnswer(lists);
-    let n = 0;
     const newContent = question.questionContent
       .replaceAll(/<ans>(.*?)<\/ans>/g, (v) => {
-        n++;
-        return `<Grid component="span"><Select className={classes.selectAnswer} variant="outlined" defaultValue="${n}" inputProps={{ 'aria-label': 'Without label' }}><MenuItem value="${n}" disabled>${n}</MenuItem>${lists
-          .map((e) => `<MenuItem value={"${e.value}"}>${e.label}</MenuItem>`)
-          .join("")}</Select></Grid>`;
+        return `<Grid component="span"><TextField className={classes.inputAnswer} variant="outlined"></TextField></Grid>`;
       })
       .replaceAll("<p", '<Typography component="span"')
       .replaceAll("</p", "</Typography");
@@ -40,7 +36,7 @@ const DropdownSelectPreview = (props: DropdownSelectPreviewProps) => {
       </Typography>
       <Typography className={classes.questionNum}>Question 1</Typography>
       <Grid item md={12}>
-        <JsxParser bindings={{ classes }} components={{ Select, MenuItem, Grid, Typography }} jsx={questionContent} />
+        <JsxParser bindings={{ classes }} components={{ Grid, Typography, TextField }} jsx={questionContent} />
       </Grid>
       <Grid item md={12}>
         {showFeedback && (
@@ -61,4 +57,4 @@ const DropdownSelectPreview = (props: DropdownSelectPreviewProps) => {
   );
 };
 
-export default DropdownSelectPreview;
+export default FillInTheGapPreview;
