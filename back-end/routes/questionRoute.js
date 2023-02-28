@@ -5,6 +5,7 @@ const {
   createQuestion,
   getAllQuestionsOfWorkspace,
   deleteQuestion,
+  deleteQuestions,
   getInfoQuestion,
 } = require('../controllers/questionController')
 const { checkAuth } = require('../middlewares/checkAuth')
@@ -16,6 +17,12 @@ Router.route('/:workspaceDomain/createQuestion').post(
   checkAuth('ADMIN_WORKSPACE'),
   checkWorkspace,
   createQuestion
+)
+
+Router.route('/:workspaceDomain/delete').delete(
+  checkAuth('ADMIN_WORKSPACE'),
+  checkWorkspace,
+  deleteQuestions
 )
 
 Router.route('/:workspaceDomain/:questionId')
