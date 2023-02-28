@@ -95,9 +95,25 @@ exports.updateQuestion = async (req, res, next) => {
   }
 }
 
+exports.deleteQuestions = async (req, res, next) => {
+  try {
+    const ids = req.body.ids.split(',')
+    await Question.deleteMany({
+      _id: { $in: ids },
+    })
+    res.status(200).json({
+      status: 'Success',
+      message: 'Questions has been deleted',
+    })
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+}
+
 exports.deleteQuestion = async (req, res, next) => {
   try {
-    await User.findByIdAndRemove(req.params.questionId)
+    await Question.findByIdAndRemove(req.params.questionId)
     res.status(200).json({
       status: 'Success',
       message: 'Question has been deleted',
