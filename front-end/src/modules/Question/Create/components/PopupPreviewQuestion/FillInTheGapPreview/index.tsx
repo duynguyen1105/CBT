@@ -44,9 +44,9 @@ const FillInTheGapPreview = (props: FillInTheGapPreviewProps) => {
             <Typography className={classes.title} style={{ marginTop: "50px" }}>
               Feedback:
             </Typography>
-            {question.answers.map((answer, index) => (
+            {question.answer.map((answer, index) => (
               <div className={classes.feedback}>
-                <span>{`${index + 1}. ${answer.answerContent}: `}</span>
+                <span>{`${index + 1}. ${answer.content}: `}</span>
                 <div dangerouslySetInnerHTML={{ __html: answer.feedback }}></div>
               </div>
             ))}

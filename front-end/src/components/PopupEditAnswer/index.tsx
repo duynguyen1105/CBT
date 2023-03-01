@@ -35,7 +35,7 @@ const PopupEditAnswer = (props: PopupEditAnswerProps) => {
   const handleChangeContent = (data) => {
     setAnswerContent(
       produce((draft) => {
-        draft.answerContent = data;
+        draft.content = data;
       })
     );
   };
@@ -66,7 +66,7 @@ const PopupEditAnswer = (props: PopupEditAnswerProps) => {
       <Grid container spacing={2} className={classes.container}>
         <p className={classes.title}>Answer Edit</p>
         <Grid item md={12}>
-          <InputsRichtext className="answer-content" onChange={handleChangeContent} name="answer" title="Answer Content" value={answerContent.answerContent} />
+          <InputsRichtext className="answer-content" onChange={handleChangeContent} name="answer" title="Answer Content" value={answerContent.content} />
         </Grid>
         <Grid item md={6}>
           <Inputs onChange={handleChangeScore} name="score" title="Score" value={answerContent.score} />

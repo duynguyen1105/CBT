@@ -16,7 +16,7 @@ const DropdownSelectPreview = (props: DropdownSelectPreviewProps) => {
   // const [listsAnswer, setListAnswer] = useState([{}]);
 
   useEffect(() => {
-    const lists = question.answers.map((e) => ({ value: e.answerContent, label: e.answerContent }));
+    const lists = question.answer.map((e) => ({ value: e.content, label: e.content }));
     // setListAnswer(lists);
     let n = 0;
     const newContent = question.questionContent
@@ -48,9 +48,9 @@ const DropdownSelectPreview = (props: DropdownSelectPreviewProps) => {
             <Typography className={classes.title} style={{ marginTop: "50px" }}>
               Feedback:
             </Typography>
-            {question.answers.map((answer, index) => (
+            {question.answer.map((answer, index) => (
               <div className={classes.feedback}>
-                <span>{`${index + 1}. ${answer.answerContent}: `}</span>
+                <span>{`${index + 1}. ${answer.content}: `}</span>
                 <div dangerouslySetInnerHTML={{ __html: answer.feedback }}></div>
               </div>
             ))}

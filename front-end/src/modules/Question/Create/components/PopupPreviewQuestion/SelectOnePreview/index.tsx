@@ -23,10 +23,10 @@ const SelectOnePreview = (props: SelectOnePreviewProps) => {
       <FormControl component="fieldset">
         <div dangerouslySetInnerHTML={{ __html: question.questionContent }}></div>
         <RadioGroup aria-label="question" name="question-detail" value={null} className={classes.answers}>
-          {question.answers.map((answer, index) => {
+          {question.answer.map((answer, index) => {
             return (
               <div key={index}>
-                <FormControlLabel control={<Radio checked={answer.isCorrect} color="primary" />} label={<div dangerouslySetInnerHTML={{ __html: answer.answerContent }}></div>} />
+                <FormControlLabel control={<Radio checked={answer.isCorrect} color="primary" />} label={<div dangerouslySetInnerHTML={{ __html: answer.content }}></div>} />
                 <Collapse className={classes.feedback} in={showFeedback}>
                   <Alert severity={answer.isCorrect ? "success" : "error"}>
                     <div dangerouslySetInnerHTML={{ __html: answer.feedback }}></div>

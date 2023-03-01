@@ -1,4 +1,4 @@
-import { TypeQuestionValue } from "models/question";
+import { CategoryQuestionValue, TypeQuestionValue } from "models/question";
 
 export enum KeyTable {
   IND = "displayOrder",
@@ -18,14 +18,14 @@ export const headerOption = [
 
 export interface Question {
   questionTitle: string;
-  category: string;
+  category: CategoryQuestionValue;
   questionContent: string;
   questionType: TypeQuestionValue;
-  answers: Answer[];
+  answer: Answer[];
 }
 export interface Answer {
   displayOrder: number;
-  answerContent: string;
+  content: string;
   score: string;
   penaltyScore: string;
   isCorrect: boolean;

@@ -9,7 +9,7 @@ import Paginations from "components/Pagination";
 import PopupConfirm from "components/PopupConfirm";
 import QuestionLabelStatus from "components/QuestionLabelStatus";
 import Images from "config/images";
-import { checkTypeSort, formatDate, getNewSort } from "helpers";
+import { checkTypeSort, formatDate, getNewSort, getPageAfterDelete } from "helpers";
 import * as _ from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -133,17 +133,18 @@ const QuestionList = () => {
 
   const handleClickSuccessDelete = () => {
     setDeleteOpen(false);
-    // dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true })
-    // questionServices.deleteByIds([...selected])
-    //   .then(r => {
-    //     const page = getPageAfterDelete(total, questionProps.query.pageIndex, questionProps.query.pageSize, selected.length);
-    //     setSelected([])
-    //     handleChangePage(page)
-    //   })
-    //   .catch(e => {
-    //     dispatch({ type: actionGlobal.SET_MESSAGE_ERROR, payload: e.message })
-    //   })
-    //   .finally(() => dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false }))
+    dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true });
+    questionServices
+      .deleteByIds([...selected])
+      .then((r) => {
+        const page = getPageAfterDelete(total, questionProps.query.pageIndex, questionProps.query.pageSize, selected.length);
+        setSelected([]);
+        handleChangePage(page);
+      })
+      .catch((e) => {
+        dispatch({ type: actionGlobal.SET_MESSAGE_ERROR, payload: e.message });
+      })
+      .finally(() => dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false }));
   };
 
   const handleClickDelete = (id: string) => () => {

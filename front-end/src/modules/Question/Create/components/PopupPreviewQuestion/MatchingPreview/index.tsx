@@ -31,16 +31,16 @@ const MatchingPreview = (props: MatchingPreviewProps) => {
   const [elements, setElements] = useState({});
 
   useEffect(() => {
-    const lists = question.answers.map((e) => `pos_${e.displayOrder.toString()}`);
-    lists.push("answers");
+    const lists = question.answer.map((e) => `pos_${e.displayOrder.toString()}`);
+    lists.push("answer");
     const newElement = lists.reduce(
       (acc, listKey) => ({
         ...acc,
         [listKey]:
-          listKey === "answers"
-            ? question.answers.map((e, index) => ({
+          listKey === "answer"
+            ? question.answer.map((e, index) => ({
                 id: `item_${index}`,
-                content: `${e.answerContent}`,
+                content: `${e.content}`,
               }))
             : [],
       }),
@@ -100,9 +100,9 @@ const MatchingPreview = (props: MatchingPreviewProps) => {
         </Grid>
       </DragDropContext>
       {showFeedback &&
-        question.answers.map((answer) => (
+        question.answer.map((answer) => (
           <div className={classes.feedback}>
-            <span>{answer.answerContent}</span>
+            <span>{answer.content}</span>
             <div dangerouslySetInnerHTML={{ __html: answer.feedback }}></div>
           </div>
         ))}
