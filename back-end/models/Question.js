@@ -40,6 +40,10 @@ const questionSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Title must be required'],
     },
+    questionContent: {
+      type: String,
+      required: [true, 'Content must be required'],
+    },
     status: {
       type: String,
       enum: STATUS_QUESTION,
