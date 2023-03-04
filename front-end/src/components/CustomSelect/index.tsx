@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import useStyles, { customSelectStyle } from "./styles";
 interface CustomSelectProps {
@@ -8,15 +8,30 @@ interface CustomSelectProps {
   options: { value: any; label: string }[];
   placeholder: string;
   onChange: Function;
+  value: string[];
   isSearchable?: boolean;
   isMulti?: boolean;
 }
 
 const CustomSelect = React.forwardRef((props: CustomSelectProps, ref) => {
-  const { options, name, placeholder, onChange, label, isSearchable = false, isMulti = false } = props;
+  const { value, options, name, placeholder, onChange, label, isSearchable = false, isMulti = false } = props;
   const classes = useStyles();
   const [selectedOption, setSelectedOption] = useState<{ value: any; label: string }[]>([]);
 
+  useEffect(() => {
+    let newValue: { value: any; label: string }[] = []
+    
+    value.forEach(e => {
+      const newVal = options.find(op => op.value === e)
+      if(newVal !== undefined ) {
+        newValue = ([...newValue, newVal])
+      }
+    })
+    
+    setSelectedOption(newValue)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[value])
   // const DropdownIndicator = (props: DropdownIndicatorProps<{ value: any; label: string; }, true, GroupBase<{ value: any; label: string; }>>) => {
   //   return (
   //     <components.DropdownIndicator {...props}>

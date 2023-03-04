@@ -1,6 +1,5 @@
 import { Grid } from "@material-ui/core";
 import images from "config/images";
-import Essay from "modules/Question/Create/components/Essay";
 import { useState } from "react";
 import Select, { components } from "react-select";
 import useStyles, { customSelectStyle } from "./styles";

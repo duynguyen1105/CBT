@@ -18,3 +18,9 @@ export const deleteByIds = async (idsArr: string[]): Promise<any> => {
 export const createQuestion = async (data: any): Promise<any> => {
   return AppAPIInstance.post(API.QUESTION.CREATE, data);
 };
+export const updateQuestion = async (data: any, id: string): Promise<any> => {
+  return AppAPIInstance.put(API.QUESTION.DEFAULT + `/${id}`, data);
+};
+export const getQuestionDetail = async (id: string): Promise<any> => {
+  return AppAPIInstance.get(API.QUESTION.DEFAULT + `/${id}`);
+};

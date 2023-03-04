@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import JsxParser from "react-jsx-parser";
 import { Question } from "../../../models";
@@ -8,6 +8,7 @@ import useStyles from "./styles";
 
 interface MatchingPreviewProps {
   question: Question;
+  showFeedback: boolean
 }
 
 const removeFromList = (list, index) => {
@@ -23,9 +24,8 @@ const addToList = (list, index, element) => {
 };
 
 const MatchingPreview = (props: MatchingPreviewProps) => {
-  const { question } = props;
+  const { question, showFeedback } = props;
   const classes = useStyles();
-  const [showFeedback, setShowFeedback] = useState(false);
   const [questionContent, setQuestionContent] = useState("");
 
   const [elements, setElements] = useState({});
@@ -77,12 +77,7 @@ const MatchingPreview = (props: MatchingPreviewProps) => {
   };
 
   return (
-    <div className={classes.container}>
-      <p className={classes.title}>{`Title : ${question.questionTitle || "-"} `}</p>
-      <p className={classes.feedbackBtn} onClick={() => setShowFeedback(!showFeedback)}>
-        Show Feedback
-      </p>
-      <p className={classes.questionNum}>Question 1</p>
+    <Fragment>
       <DragDropContext onDragEnd={onDragEnd}>
         <Grid container className={classes.answers}>
           <Grid item sm={9}>
@@ -95,7 +90,7 @@ const MatchingPreview = (props: MatchingPreviewProps) => {
             />
           </Grid>
           <Grid item sm={3}>
-            <DraggableElement elements={elements["answers"]} prefix={"answers"} />
+            <DraggableElement elements={elements["answer"]} prefix={"answer"} />
           </Grid>
         </Grid>
       </DragDropContext>
@@ -106,7 +101,7 @@ const MatchingPreview = (props: MatchingPreviewProps) => {
             <div dangerouslySetInnerHTML={{ __html: answer.feedback }}></div>
           </div>
         ))}
-    </div>
+    </Fragment>
   );
 };
 

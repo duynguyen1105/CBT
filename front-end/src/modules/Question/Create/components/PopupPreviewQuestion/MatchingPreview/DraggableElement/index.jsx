@@ -12,7 +12,7 @@ const DraggableElement = (props) => {
   const { prefix, elements } = props;
   const classes = useStyles();
   return (
-    <div className={prefix === "answers" ? classes.dropElement : classes.blank}>
+    <div className={prefix === "answer" ? classes.dropElement : classes.blank}>
       <Droppable
         droppableId={`${prefix}`}
       >

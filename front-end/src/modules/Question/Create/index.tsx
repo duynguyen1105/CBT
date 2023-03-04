@@ -2,26 +2,26 @@ import { Checkbox, Grid, Table, TableBody, TableCell, TableContainer, TableHead,
 import ButtonAction from "components/ButtonAction";
 import Buttons from "components/Buttons";
 import ButtonsOutline from "components/ButtonsOutline";
-import CustomSelect from "components/CustomSelect";
 import CreateGapAnswerInput from "components/CreateGapAnswerInput";
+import CustomSelect from "components/CustomSelect";
 import Inputs from "components/Inputs";
+import InputsRichtext from "components/InputsRichtext";
+import PopupConfirm from "components/PopupConfirm";
 import PopupEditFeedback from "components/PopupEditFeedback";
 import QuestionTypeSelect from "components/QuestionTypeSelect";
 import Images from "config/images";
-import { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import PopupPreviewQuestion from "./components/PopupPreviewQuestion";
 import produce from "immer";
 import { CategoryQuestionValue, listQuestionCategory, QuestionStatusValue, TypeQuestionValue } from "models/question";
-import { headerOption, Question } from "./models";
-import useStyles from "./styles";
-import InputsRichtext from "components/InputsRichtext";
-import PopupConfirm from "components/PopupConfirm";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import * as questionServices from "services/question";
-import * as actionGlobal from "store/reducers/global/actionTypes";
 import { useHistory } from "react-router-dom";
 import { routes } from "routers/routes";
+import * as questionServices from "services/question";
+import * as actionGlobal from "store/reducers/global/actionTypes";
+import PopupPreviewQuestion from "./components/PopupPreviewQuestion";
+import { headerOption, Question } from "./models";
+import useStyles from "./styles";
 
 const CreateQuestion = () => {
   const methods = useForm({
@@ -52,7 +52,7 @@ const CreateQuestion = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-
+  
   const [preview, setPreview] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [changeType, setChangeType] = useState<TypeQuestionValue | undefined>();
@@ -68,6 +68,28 @@ const CreateQuestion = () => {
   };
 
   const [question, setQuestion] = useState<Question>(initialQuestion);
+
+  useEffect(() => {
+    if(history.location.pathname.includes('edit')){
+      const id = history.location.pathname.split('/')[3]
+      getQuestionDetail(id)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[history])
+
+  const getQuestionDetail = async (id: string) => {
+    dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true });
+    await questionServices
+      .getQuestionDetail(id)
+      .then((r) => {
+        setQuestion(r.data.question);
+      })
+      .catch((e) => {
+        dispatch({ type: actionGlobal.SET_MESSAGE_ERROR, payload: e.message });
+      })
+      .finally(() => dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false }));
+  };
+
   const handleClosePreview = () => {
     setPreview(false);
   };
@@ -170,26 +192,66 @@ const CreateQuestion = () => {
   };
 
   const handleSaveAsDraft = () => {
-    dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true });
-    questionServices
-      .createQuestion({ ...question, status: QuestionStatusValue.Draft })
-      .then((r) => {
-        history.push(routes.question.edit.replace(":questionId", r.data.question._id));
-      })
-      .catch((e) => {
-        dispatch({ type: actionGlobal.SET_MESSAGE_ERROR, payload: e.message });
-      })
-      .finally(() => {
-        dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false });
-        dispatch({ type: actionGlobal.SET_MESSAGE_SUCCESS, payload: "CREATE QUESTION SUCCESS" });
-      });
+    if(history.location.pathname.includes('edit')){
+      const id = history.location.pathname.split('/')[3]
+      dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true });
+      questionServices
+        .updateQuestion({ ...question, status: QuestionStatusValue.Draft }, id)
+        .then((r) => {
+          setQuestion(r.data.question)
+          history.push(routes.question.edit.replace(":questionId", r.data.question._id));
+          dispatch({ type: actionGlobal.SET_MESSAGE_SUCCESS, payload: "UPDATE QUESTION SUCCESS" });
+        })
+        .catch((e) => {
+          dispatch({ type: actionGlobal.SET_MESSAGE_ERROR, payload: e.message });
+        })
+        .finally(() => {
+          dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false });
+        });
+    }
+    else {
+      dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true });
+      questionServices
+        .createQuestion({ ...question, status: QuestionStatusValue.Draft })
+        .then((r) => {
+          setQuestion(r.data.question)
+          history.push(routes.question.edit.replace(":questionId", r.data.question._id));
+          dispatch({ type: actionGlobal.SET_MESSAGE_SUCCESS, payload: "CREATE QUESTION SUCCESS" });
+        })
+        .catch((e) => {
+          dispatch({ type: actionGlobal.SET_MESSAGE_ERROR, payload: e.message });
+        })
+        .finally(() => {
+          dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false });
+        });
+    }
+   
   };
 
   const handlePublish = () => {
+    if(history.location.pathname.includes('edit')){
+      const id = history.location.pathname.split('/')[3]
+      dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true });
+      questionServices
+        .updateQuestion({ ...question, status: QuestionStatusValue.Published }, id)
+        .then((r) => {
+          setQuestion(r.data.question)
+          history.push(routes.question.edit.replace(":questionId", r.data.question._id));
+          dispatch({ type: actionGlobal.SET_MESSAGE_SUCCESS, payload: "UPDATE QUESTION SUCCESS" });
+        })
+        .catch((e) => {
+          dispatch({ type: actionGlobal.SET_MESSAGE_ERROR, payload: e.message });
+        })
+        .finally(() => {
+          dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false });
+        });
+    }
+    else {
     dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true });
     questionServices
       .createQuestion({ ...question, status: QuestionStatusValue.Published })
       .then((r) => {
+        dispatch({ type: actionGlobal.SET_MESSAGE_SUCCESS, payload: "CREATE QUESTION SUCCESS" });
         history.push(routes.question.edit.replace(":questionId", r.data.question._id));
       })
       .catch((e) => {
@@ -197,9 +259,10 @@ const CreateQuestion = () => {
       })
       .finally(() => {
         dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false });
-        dispatch({ type: actionGlobal.SET_MESSAGE_SUCCESS, payload: "CREATE QUESTION SUCCESS" });
       });
+    }
   };
+
   return (
     <Grid container className={classes.container}>
       <QuestionTypeSelect type={question.questionType} onChange={handleChangeQuestionType} />
@@ -218,7 +281,14 @@ const CreateQuestion = () => {
               />
             </Grid>
             <Grid item md={3}>
-              <CustomSelect name="category" label="Category" options={listQuestionCategory} placeholder="Category" onChange={(e) => handleChangeQuestionContent("category", e)} />
+              <CustomSelect 
+              name="category" 
+              label="Category" 
+              value={[question.category]} 
+              options={listQuestionCategory} 
+              placeholder="Category" 
+              onChange={(e) => handleChangeQuestionContent("category", e)} 
+              />
             </Grid>
             <Grid item md={12}>
               {isComplexType(question.questionType) ? (
@@ -268,25 +338,25 @@ const CreateQuestion = () => {
                             <TableRow key={`answer-${index}`}>
                               <TableCell align="center">{index + 1}</TableCell>
                               <TableCell className={classes.answerContent}>
-                                {isSimpleType(question.questionType) ? (
-                                  <InputsRichtext
-                                    name={`answer-${index}`}
-                                    className={`answer-content-${index}`}
-                                    value={row.content}
-                                    onChange={(value) => handleChangeAnswerContent(index, "content", value)}
-                                  />
-                                ) : !row.isCorrect ? (
-                                  <TextField
-                                    fullWidth
-                                    InputProps={{
-                                      disableUnderline: true,
-                                    }}
-                                    value={row.content}
-                                    onChange={(event) => handleChangeAnswerContent(index, "content", event.target.value)}
-                                  />
-                                ) : (
-                                  <p>{row.content}</p>
-                                )}
+                                {
+                                  isSimpleType(question.questionType) ? (
+                                    <InputsRichtext
+                                      name={`answer-${index}`}
+                                      className={`answer-content-${index}`}
+                                      value={row.content}
+                                      onChange={(value) => handleChangeAnswerContent(index, "content", value)}
+                                    />
+                                  ) : !row.isCorrect ? (
+                                    <TextField
+                                      fullWidth
+                                      InputProps={{
+                                        disableUnderline: true,
+                                      }}
+                                      value={row.content}
+                                      onChange={(event) => handleChangeAnswerContent(index, "content", event.target.value)}
+                                    />
+                                  ) : <p>{row.content}</p>
+                                }
                               </TableCell>
                               <TableCell align="center" className={classes.answerScore}>
                                 <TextField
@@ -319,8 +389,11 @@ const CreateQuestion = () => {
                                 <ButtonAction btnType="edit" onClick={handleEditAnswer(index)} />
                               </TableCell>
                               <TableCell align="center">
-                                {isSimpleType(question.questionType) ||
-                                  (!isSimpleType(question.questionType) && !row.isCorrect && <ButtonAction btnType="delete" onClick={handleRemoveAnswer(index)} />)}
+                                {
+                                  (isSimpleType(question.questionType) ||
+                                   (!isSimpleType(question.questionType) && !row.isCorrect)) 
+                                   && <ButtonAction btnType="delete" onClick={handleRemoveAnswer(index)} />
+                                }
                               </TableCell>
                             </TableRow>
                           );

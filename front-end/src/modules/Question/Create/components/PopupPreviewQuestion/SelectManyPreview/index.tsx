@@ -1,25 +1,18 @@
 import { Checkbox, Collapse, FormControl, FormControlLabel, RadioGroup } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { useState } from "react";
 import { Question } from "../../../models";
 import useStyles from "./styles";
 
 interface SelectManyPreviewProps {
   question: Question;
+  showFeedback: boolean;
 }
 
 const SelectManyPreview = (props: SelectManyPreviewProps) => {
-  const { question } = props;
+  const { question, showFeedback} = props;
   const classes = useStyles();
-  const [showFeedback, setShowFeedback] = useState(false);
 
   return (
-    <div className={classes.container}>
-      <p className={classes.title}>{`Title : ${question.questionTitle || "-"} `}</p>
-      <p className={classes.feedbackBtn} onClick={() => setShowFeedback(!showFeedback)}>
-        Show Feedback
-      </p>
-      <p className={classes.questionNum}>Question 1</p>
       <FormControl component="fieldset">
         <div dangerouslySetInnerHTML={{ __html: question.questionContent }}></div>
         <RadioGroup aria-label="question" name="question-detail" value={null} className={classes.answers}>
@@ -37,7 +30,6 @@ const SelectManyPreview = (props: SelectManyPreviewProps) => {
           })}
         </RadioGroup>
       </FormControl>
-    </div>
   );
 };
 

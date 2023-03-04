@@ -25,6 +25,7 @@ function MasterLayout() {
             <Redirect exact from={routes.default} to={routes.question.default} />
             <PermissionRoute exact isPermission={true} component={QuestionList} urlRedirect={routes.login} path={routes.question.default} />
             <PermissionRoute exact isPermission={true} component={CreateQuestion} urlRedirect={routes.login} path={routes.question.create} />
+            <PermissionRoute exact isPermission={true} component={CreateQuestion} urlRedirect={routes.login} path={routes.question.edit} />
 
             <PermissionRoute exact isPermission={true} component={TestList} urlRedirect={routes.login} path={routes.test.default} />
             <PermissionRoute exact isPermission={true} component={CreateTest} urlRedirect={routes.login} path={routes.test.create} />

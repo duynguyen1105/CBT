@@ -1,17 +1,17 @@
 import { Grid, TextField, Typography } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import JsxParser from "react-jsx-parser";
 import { Question } from "../../../models";
 import useStyles from "./styles";
 
 interface FillInTheGapPreviewProps {
   question: Question;
+  showFeedback: boolean
 }
 
 const FillInTheGapPreview = (props: FillInTheGapPreviewProps) => {
-  const { question } = props;
+  const { question,showFeedback } = props;
   const classes = useStyles();
-  const [showFeedback, setShowFeedback] = useState(false);
   const [questionContent, setQuestionContent] = useState("");
   // const [listsAnswer, setListAnswer] = useState([{}]);
 
@@ -29,12 +29,7 @@ const FillInTheGapPreview = (props: FillInTheGapPreviewProps) => {
   }, [question]);
 
   return (
-    <div className={classes.container}>
-      <Typography className={classes.title}>{`Title : ${question.questionTitle || "-"} `}</Typography>
-      <Typography className={classes.feedbackBtn} onClick={() => setShowFeedback(!showFeedback)}>
-        Show Feedback
-      </Typography>
-      <Typography className={classes.questionNum}>Question 1</Typography>
+    <Fragment>
       <Grid item md={12}>
         <JsxParser bindings={{ classes }} components={{ Grid, Typography, TextField }} jsx={questionContent} />
       </Grid>
@@ -53,7 +48,7 @@ const FillInTheGapPreview = (props: FillInTheGapPreviewProps) => {
           </>
         )}
       </Grid>
-    </div>
+    </Fragment>
   );
 };
 
