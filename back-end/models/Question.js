@@ -32,7 +32,6 @@ const answerSchema = new mongoose.Schema({
   },
   feedback: {
     type: String,
-    required: [true, 'Feedback must be required'],
   },
 })
 
