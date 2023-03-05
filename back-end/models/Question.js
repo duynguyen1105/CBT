@@ -22,7 +22,9 @@ const answerSchema = new mongoose.Schema({
   },
   penaltyScore: {
     type: Number,
-    required: [true, 'Penalty Score must be required'],
+  },
+  gradingGuide: {
+    type: String,
   },
   isCorrect: {
     type: Boolean,
