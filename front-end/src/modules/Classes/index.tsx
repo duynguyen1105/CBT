@@ -18,100 +18,42 @@ import InputSearch from "components/InputSearch";
 import Paginations from "components/Pagination";
 import PopupConfirm from "components/PopupConfirm";
 import TestLabelStatus from "components/TestLabelStatus";
-import Images from "config/images";
+import images from "config/images";
 import { checkTypeSort, getNewSort } from "helpers";
-import * as _ from "lodash";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { routes } from "routers/routes";
 import { reducerType } from "store/reducers";
-import { IQuestionState } from "store/reducers/question";
-import * as actionsQuestion from "store/reducers/question/actionTypes";
-import { dataList, headerOption } from "./models";
+import { IClassesState } from "store/reducers/classes";
+import { fakeDataClasses, HeaderTableClasses } from "./models";
+import * as actionClasses from "store/reducers/classes/actionType";
 import useStyles from "./styles";
+import * as _ from "lodash";
 
-const TestList = () => {
-  const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
-  const dispatch = useDispatch();
+const Classes: FC = () => {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const questionProps: IQuestionState = useSelector(
-    (state: reducerType) => state.question
+  const [selected, setSelected] = useState<readonly string[]>([]);
+  const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+  const isSelected = (id: string) => selected.indexOf(id) !== -1;
+
+  const classesProps: IClassesState = useSelector(
+    (state: reducerType) => state.classes
   );
 
-  //const [dataList, setDataList] = useState<Question[]>([]);
-  const [selected, setSelected] = useState<readonly string[]>([]);
-  //const [total, setTotal] = useState(dataList.length);
-
-  // useEffect(() => {
-  //   getDataList();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [questionProps]);
-
-  // const getDataList = async () => {
-  //   dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true })
-  //   await questionServices.getListQuestion(questionProps.query)
-  //     .then(r => {
-  //       const maxPage = Math.ceil(r.total / questionProps.query.pageSize)
-  //       if (maxPage < questionProps.query.pageIndex) {
-  //         handleChangePage(maxPage)
-  //         return null
-  //       }
-  //       setDataList(r.data)
-  //       setTotal(r.totalCount);
-  //     })
-  //     .catch(e => {
-  //       dispatch({ type: actionGlobal.SET_MESSAGE_ERROR, payload: e.message })
-  //     })
-  //     .finally(() => dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false }))
-  // }
-
-  const handleChangePage = (page: number) => {
-    const { query } = { ...questionProps };
-    query.pageIndex = page;
-    dispatch({ type: actionsQuestion.SET_QUESTION_QUERY, payload: query });
-    setSelected([]);
-  };
-
-  const oneChangePageSize = (size: number) => {
-    const { query } = { ...questionProps };
-    query.pageIndex = 1;
-    query.pageSize = size;
-    dispatch({ type: actionsQuestion.SET_QUESTION_QUERY, payload: query });
-    setSelected([]);
-  };
-  const checkIconSort = (key: string): any => {
-    return checkTypeSort(key, questionProps.query);
-  };
-
-  const handleChangeSort = (key: string) => () => {
-    const { query } = { ...questionProps };
-    dispatch({
-      type: actionsQuestion.SET_QUESTION_QUERY,
-      payload: { ...query, ...getNewSort(key, query.sortBy, query.sortOrder) },
-    });
-  };
-
   const handleChangeKeyWord = _.debounce((e) => {
-    const { query } = { ...questionProps };
+    const { query } = { ...classesProps };
     const keyword = e?.target?.value || "";
     dispatch({
-      type: actionsQuestion.SET_QUESTION_QUERY,
+      type: actionClasses.SET_CLASSES_QUERY,
       payload: { ...query, keyword },
     });
     setSelected([]);
   }, 300);
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelecteds = dataList.map((n) => n.testId);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
   const handleChangeCheckbox = (id: string) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected: readonly string[] = [];
@@ -130,36 +72,33 @@ const TestList = () => {
     setSelected(newSelected);
   };
 
-  const handleEditTest = (testId: string) => () => {
-    history.push(routes.test.edit.replace(":testId", testId));
-  };
-  const handleOpenDeleteDialog = () => {
-    setDeleteOpen(true);
-  };
-
-  const handleCreateTest = () => {
-    history.push(routes.test.create);
-  };
-  const isSelected = (id: string) => selected.indexOf(id) !== -1;
-
-  const handleClickCancelDelete = () => {
-    setDeleteOpen(false);
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      const newSelecteds = fakeDataClasses.map((n) => n.id);
+      setSelected(newSelecteds);
+      return;
+    }
     setSelected([]);
   };
 
-  const handleClickSuccessDelete = () => {
-    // setDeleteOpen(false);
-    // dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: true })
-    // questionServices.deleteByIds([...selected])
-    //   .then(r => {
-    //     const page = getPageAfterDelete(total, questionProps.query.pageIndex, questionProps.query.pageSize, selected.length);
-    //     setSelected([])
-    //     handleChangePage(page)
-    //   })
-    //   .catch(e => {
-    //     dispatch({ type: actionGlobal.SET_MESSAGE_ERROR, payload: e.message })
-    //   })
-    //   .finally(() => dispatch({ type: actionGlobal.SET_LOADING_PAGE, payload: false }))
+  const checkIconSort = (key: string): any => {
+    return checkTypeSort(key, classesProps.query);
+  };
+
+  const handleChangeSort = (key: string) => () => {
+    const { query } = { ...classesProps };
+    dispatch({
+      type: actionClasses.SET_CLASSES_QUERY,
+      payload: { ...query, ...getNewSort(key, query.sortBy, query.sortOrder) },
+    });
+  };
+
+  const handleEditClasses = (classId: string) => () => {
+    history.push(routes.class.edit.replace(":classId", classId));
+  };
+
+  const handleCreateClasses = () => {
+    history.push(routes.class.create);
   };
 
   const handleClickDelete = (id: string) => () => {
@@ -167,23 +106,51 @@ const TestList = () => {
     setTimeout(() => setDeleteOpen(true), 100);
   };
 
+  const handleOpenDeleteDialog = () => {
+    setDeleteOpen(true);
+  };
+
+  const handleClickCancelDelete = () => {
+    setDeleteOpen(false);
+    setSelected([]);
+  };
+
+  const handleClickSuccessDelete = () => {
+    console.log(
+      "🚀 ~ file: index.tsx:50 ~ handleClickSuccessDelete ~ handleClickSuccessDelete"
+    );
+  };
+
+  const handleChangePage = (page: number) => {
+    console.log(
+      "🚀 ~ file: index.tsx:56 ~ handleChangePage ~ handleChangePage"
+    );
+    setSelected([]);
+  };
+
+  const oneChangePageSize = (size: number) => {
+    console.log(
+      "🚀 ~ file: index.tsx:63 ~ oneChangePageSize ~ oneChangePageSize"
+    );
+    setSelected([]);
+  };
   return (
     <Grid container>
       <Grid container className={classes.container}>
         <Grid item md={12} className={classes.header}>
           <BreadcrumbsCustom
-            name="Test Bank"
-            icon={Images.CBTicStackRed}
-            link2="List test"
+            name="My Classes"
+            icon={images.CBTicStackRed}
+            link2="List"
           />
           <div className={classes.avatar}>
-            <p>Hi! Julia Falling on you</p>
+            <p>Hi! Julia</p>
             <Avatar />
           </div>
         </Grid>
         <Grid className={classes.actionRowLeft}>
           <InputSearch
-            defaultValue={questionProps.query.keyword}
+            defaultValue={""}
             onChange={handleChangeKeyWord}
             placeholder="Search here..."
             search
@@ -192,19 +159,19 @@ const TestList = () => {
         <Grid className={classes.actionRowRight}>
           {selected?.length !== 0 && (
             <>
-              <div>{`${selected.length} question selected`}</div>
+              <div>{`${selected.length} classes selected`}</div>
               <ButtonsOutline
                 onClick={handleOpenDeleteDialog}
                 children="Delete"
-                icon={Images.CBTicTrashRed}
+                icon={images.CBTicTrashRed}
                 placementIcon
               />
             </>
           )}
           <Buttons
             children="Create"
-            icon={Images.CBTicPlusCircle}
-            onClick={handleCreateTest}
+            icon={images.CBTicPlusCircle}
+            onClick={handleCreateClasses}
             placementIcon
           />
         </Grid>
@@ -218,17 +185,19 @@ const TestList = () => {
                   onChange={handleSelectAllClick}
                   className={`${classes.headerCheckbox} custom-color-default`}
                   checked={
-                    dataList?.length > 0 && selected.length === dataList.length
+                    fakeDataClasses?.length > 0 &&
+                    selected.length === fakeDataClasses.length
                   }
                   indeterminate={
-                    selected.length > 0 && selected.length < dataList.length
+                    selected.length > 0 &&
+                    selected.length < fakeDataClasses.length
                   }
                   inputProps={{
                     "aria-label": "select all desserts",
                   }}
                 />
               </TableCell>
-              {headerOption?.map((option, index) => (
+              {HeaderTableClasses?.map((option, index) => (
                 <TableCell style={{ minWidth: option.width }} key={index}>
                   {option.name}
                   {
@@ -245,13 +214,13 @@ const TestList = () => {
             </TableRow>
           </TableHead>
           <TableBody className={classes.tableBody}>
-            {dataList &&
-              dataList.map((row, index) => {
-                const isItemSelected = isSelected(row.testId);
+            {fakeDataClasses &&
+              fakeDataClasses.map((row, index) => {
+                const isItemSelected = isSelected(row.id);
                 return (
                   <TableRow
                     key={index}
-                    onClick={() => handleChangeCheckbox(row.testId)}
+                    onClick={() => handleChangeCheckbox(row.id)}
                   >
                     <TableCell align="center" style={{ width: 58 }}>
                       <Checkbox
@@ -259,11 +228,11 @@ const TestList = () => {
                         className="custom-color-default"
                       />
                     </TableCell>
-                    <TableCell>{row.testId}</TableCell>
-                    <TableCell>{row.title}</TableCell>
-                    <TableCell>{row.class}</TableCell>
-                    <TableCell>{row.createdBy}</TableCell>
-                    <TableCell>{row.createOn}</TableCell>
+                    <TableCell>{row.classID}</TableCell>
+                    <TableCell>{row.className}</TableCell>
+                    <TableCell>{row.teacher}</TableCell>
+                    <TableCell>{row.startTime}</TableCell>
+                    <TableCell>{row.endTime}</TableCell>
                     <TableCell>
                       <TestLabelStatus typeStatus={row.status} />
                     </TableCell>
@@ -273,11 +242,11 @@ const TestList = () => {
                     >
                       <ButtonAction
                         btnType="edit"
-                        onClick={handleEditTest(row.testId)}
+                        onClick={handleEditClasses(row.id)}
                       />
                       <ButtonAction
                         btnType="delete"
-                        onClick={handleClickDelete(row.testId)}
+                        onClick={handleClickDelete(row.id)}
                       />
                     </TableCell>
                   </TableRow>
@@ -286,9 +255,9 @@ const TestList = () => {
           </TableBody>
         </Table>
         <Paginations
-          total={dataList.length}
-          size={questionProps.query.pageSize}
-          currentPage={questionProps.query.pageIndex}
+          total={fakeDataClasses.length}
+          size={12}
+          currentPage={1}
           onChange={handleChangePage}
           oneChangePageSize={oneChangePageSize}
         />
@@ -305,4 +274,4 @@ const TestList = () => {
   );
 };
 
-export default TestList;
+export default Classes;
