@@ -118,7 +118,6 @@ const images = {
   icX,
   icDate,
   icPencilLine,
-
 }
 
 export default images

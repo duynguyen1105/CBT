@@ -27,9 +27,9 @@ export const navs = [
     icon: <SvgIcon component={CBTicStack} viewBox="0 0 24 25" />,
     path: routes.test.default,
   },
-  // {
-  //   title: "My Classes",
-  //   icon: <SvgIcon component={CBTicGrid4} viewBox="0 0 24 25" />,
-  //   path: routes.class.default,
-  // }
+  {
+    title: "My Classes",
+    icon: <SvgIcon component={CBTicGrid4} viewBox="0 0 24 25" />,
+    path: routes.class.default,
+  },
 ];

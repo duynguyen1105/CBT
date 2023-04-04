@@ -10,7 +10,7 @@ interface ButtonsProps {
   icon?: any;
   placementIcon?: boolean;
   disabled?: boolean;
-  className?: any
+  className?: any;
 }
 
 const Buttons = (props: ButtonsProps) => {

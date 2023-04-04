@@ -3,7 +3,7 @@ import { TestStatus } from "models/test";
 import useStyles from "./styles";
 
 interface TestLabelStatusProps {
-  typeStatus: string
+  typeStatus: string;
 }
 
 const TestLabelStatus = (props: TestLabelStatusProps) => {
@@ -17,12 +17,12 @@ const TestLabelStatus = (props: TestLabelStatusProps) => {
         typeStatus === TestStatus.InProgress ? classes.circleGreen : "",
         typeStatus === TestStatus.Draft ? classes.circleYellow : "",
         typeStatus === TestStatus.Finished ? classes.circleRed : "",
-      )
-      }
+        typeStatus === TestStatus.Closed ? classes.circleRed : ""
+      )}
       {...rest}
     >
       {typeStatus}
-    </div >
+    </div>
   );
 };
 export default TestLabelStatus;
