@@ -1,27 +1,28 @@
 // import { lazy } from 'react';
 
-import MenuLeft from "components/MenuLeft";
-import { Redirect, Switch } from "react-router-dom";
-import { routes } from "routers/routes";
-import PermissionRoute from "./PermissionRoute";
-import useStyles from "./styles";
+import MenuLeft from 'components/MenuLeft'
+import { Redirect, Switch } from 'react-router-dom'
+import { routes } from 'routers/routes'
+import PermissionRoute from './PermissionRoute'
+import useStyles from './styles'
 
-import CreateQuestion from "modules/Question/Create";
-import QuestionList from "modules/Question/List";
+import CreateQuestion from 'modules/Question/Create'
+import QuestionList from 'modules/Question/List'
 
-import Classes from "modules/Classes";
-import CreateClass from "modules/Classes/Create";
-import DetailClasses from "modules/Classes/Detail";
-import BeginTest from "modules/Classes/Detail/MakeTest/BeginTest";
-import CreateTest from "modules/Test/Create";
-import TestList from "modules/Test/List";
-import ListeningTest from "modules/Classes/Detail/MakeTest/Test/ListeningTest";
-import ReadingTest from "modules/Classes/Detail/MakeTest/Test/ReadingTest";
-import WritingTest from "modules/Classes/Detail/MakeTest/Test/WritingTest";
-import SpeakingTest from "modules/Classes/Detail/MakeTest/Test/SpeakingTest";
+import Classes from 'modules/Classes'
+import CreateClass from 'modules/Classes/Create'
+import DetailClasses from 'modules/Classes/Detail'
+import BeginTest from 'modules/Classes/Detail/MakeTest/BeginTest'
+import CreateTest from 'modules/Test/Create'
+import TestList from 'modules/Test/List'
+import ListeningTest from 'modules/Classes/Detail/MakeTest/Test/ListeningTest'
+import ReadingTest from 'modules/Classes/Detail/MakeTest/Test/ReadingTest'
+import WritingTest from 'modules/Classes/Detail/MakeTest/Test/WritingTest'
+import SpeakingTest from 'modules/Classes/Detail/MakeTest/Test/SpeakingTest'
+import UserList from 'modules/Users/List'
 
 function MasterLayout() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div className={classes.root}>
@@ -34,6 +35,15 @@ function MasterLayout() {
               from={routes.default}
               to={routes.question.default}
             />
+
+            <PermissionRoute
+              exact
+              isPermission={true}
+              component={UserList}
+              urlRedirect={routes.login}
+              path={routes.user.default}
+            />
+
             <PermissionRoute
               exact
               isPermission={true}
@@ -135,6 +145,6 @@ function MasterLayout() {
         </main>
       </div>
     </div>
-  );
+  )
 }
-export default MasterLayout;
+export default MasterLayout
