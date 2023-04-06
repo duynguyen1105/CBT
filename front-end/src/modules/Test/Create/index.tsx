@@ -1,14 +1,12 @@
-import {
-  Avatar, Grid, Step, StepLabel, Stepper, Typography
-} from "@material-ui/core";
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import SettingsIcon from '@material-ui/icons/Settings';
-import VideoLabelIcon from '@material-ui/icons/VideoLabel';
-import clsx from 'clsx';
+import { Avatar, Grid, Step, StepLabel, Stepper, Typography } from "@material-ui/core";
+import GroupAddIcon from "@material-ui/icons/GroupAdd";
+import SettingsIcon from "@material-ui/icons/Settings";
+import VideoLabelIcon from "@material-ui/icons/VideoLabel";
+import clsx from "clsx";
 import BreadcrumbsCustom from "components/BreadcrumbsCustom";
 import Buttons from "components/Buttons";
 import Images from "config/images";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { useState } from "react";
 import ContentTab from "./ContentTab";
 import SettingTab from "./SettingTab";
@@ -34,7 +32,7 @@ const ColorlibStepIcon = (props) => {
       {icons[String(props.icon)]}
     </div>
   );
-}
+};
 
 ColorlibStepIcon.propTypes = {
   /**
@@ -51,10 +49,9 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-
 const getSteps = () => {
-  return ['Setting', 'Create content', 'Add people'];
-}
+  return ["Setting", "Create content", "Add people"];
+};
 
 const getStepContent = (step) => {
   switch (step) {
@@ -63,14 +60,14 @@ const getStepContent = (step) => {
     case 1:
       return <ContentTab />;
     case 2:
-      return 'What is an ad group anyways?';
+      return "What is an ad group anyways?";
     default:
-      return 'Unknown step';
+      return "Unknown step";
   }
-}
+};
 
 const CreateTest = () => {
-  const classes = useStyles()
+  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
@@ -89,12 +86,7 @@ const CreateTest = () => {
   return (
     <Grid container className={classes.container}>
       <Grid item md={12} className={classes.header}>
-        <BreadcrumbsCustom
-          name="Test Bank"
-          icon={Images.CBTicStackRed}
-          link1="Test"
-          link2="Create"
-        />
+        <BreadcrumbsCustom name="Test Bank" icon={Images.CBTicStackRed} link1="Test" link2="Create" />
         <div className={classes.avatar}>
           <p>Hi! Julia Falling on you</p>
           <Avatar />
@@ -112,29 +104,17 @@ const CreateTest = () => {
           <div>
             {activeStep === steps.length ? (
               <div>
-                <Typography>
-                  All steps completed - you&apos;re finished
-                </Typography>
-                <Buttons
-                  onClick={handleReset}
-                  children="Reset"
-                  icon={Images.CBTicRefresh}
-                  placementIcon
-                />
+                <Typography>All steps completed - you&apos;re finished</Typography>
+                <Buttons onClick={handleReset} children="Reset" icon={Images.CBTicRefresh} placementIcon />
               </div>
             ) : (
               <div>
-                <Typography>{getStepContent(activeStep)}</Typography>
+                <div>{getStepContent(activeStep)}</div>
                 <div className={classes.groupBtn}>
-                  <Buttons
-                    children="Back"
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    icon={Images.CBTicArrowLeft}
-                  />
+                  <Buttons children="Back" disabled={activeStep === 0} onClick={handleBack} icon={Images.CBTicArrowLeft} />
                   <Buttons
                     onClick={handleNext}
-                    children={activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                    children={activeStep === steps.length - 1 ? "Finish" : "Next"}
                     icon={activeStep === steps.length - 1 ? Images.CBTicCheckWhite : Images.CBTicArrowRight}
                     placementIcon
                   />
@@ -145,7 +125,8 @@ const CreateTest = () => {
         </div>
       </Grid>
     </Grid>
-  )
+  );
 };
 
-export default CreateTest
+export default CreateTest;
+
