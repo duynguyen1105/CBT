@@ -1,17 +1,17 @@
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import EditorToolbar, { formats, redoChange, undoChange } from './EditorToolbar';
-import './styles.css';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import EditorToolbar, { formats, redoChange, undoChange } from "./EditorToolbar";
+import "./styles.css";
 
 interface EditorProps {
   placeholder?: string;
   onChange: any;
   value: any;
-  className: string
+  className: string;
 }
 
 export const Editor = (props: EditorProps) => {
-  const { onChange, value, placeholder, className } = props
+  const { onChange, value, placeholder, className } = props;
 
   const handleChange = (value) => {
     onChange(value);
@@ -26,18 +26,12 @@ export const Editor = (props: EditorProps) => {
     },
   };
   return (
-    <div className='text-editor'>
+    <div className="text-editor">
       <EditorToolbar className={className} />
-      <ReactQuill
-        theme='snow'
-        value={value}
-        onChange={handleChange}
-        placeholder={placeholder}
-        modules={modules}
-        formats={formats}
-      />
+      <ReactQuill theme="snow" value={value} onChange={handleChange} placeholder={placeholder} modules={modules} formats={formats} />
     </div>
   );
 };
 
 export default Editor;
+
