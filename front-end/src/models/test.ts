@@ -22,3 +22,18 @@ export const listTestStatus = [
   { id: TestStatus.InProgress, name: TestStatus.InProgress },
   { id: TestStatus.Pending, name: TestStatus.Pending },
 ];
+
+export interface Description {
+  content: string;
+}
+interface Question {
+  isSingleQuestion: boolean;
+  shuffleAnswer: boolean;
+  score: number;
+  questionContent: Question;
+}
+
+interface PageContent {
+  content: string;
+}
+

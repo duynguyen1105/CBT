@@ -1,4 +1,4 @@
-export interface Question {
+export interface IQuestionListItem {
   createdAt: string;
   category: string;
   questionType: string;
@@ -9,6 +9,22 @@ export interface Question {
   __v: number;
   _id: string;
 }
+export interface IQuestionFormItem {
+  questionTitle: string;
+  category: CategoryQuestionValue;
+  questionContent: string;
+  questionType: TypeQuestionValue;
+  answer: IAnswer[];
+}
+export interface IAnswer {
+  displayOrder: number;
+  content: string;
+  score: string;
+  penaltyScore: string;
+  isCorrect: boolean;
+  feedback: string;
+  gradingGuide?: string;
+}
 
 export enum QuestionStatusValue {
   Published = "PUBLISHED",
@@ -18,13 +34,19 @@ export enum QuestionStatusLabel {
   Published = "Published",
   Draft = "Draft",
 }
-export const listQuestionStatus = [{ value: QuestionStatusValue.Published, label: QuestionStatusLabel.Published }, { value: QuestionStatusValue.Draft, label: QuestionStatusLabel.Draft }];
+export const listQuestionStatus = [
+  { value: QuestionStatusValue.Published, label: QuestionStatusLabel.Published },
+  { value: QuestionStatusValue.Draft, label: QuestionStatusLabel.Draft },
+];
 
 export enum CategoryQuestionValue {
   TOEIC = "TOEIC",
   IELTS = "IELTS",
 }
-export const listQuestionCategory = [{ value: CategoryQuestionValue.TOEIC, label: CategoryQuestionValue.TOEIC }, { value: CategoryQuestionValue.IELTS, label: CategoryQuestionValue.IELTS }];
+export const listQuestionCategory = [
+  { value: CategoryQuestionValue.TOEIC, label: CategoryQuestionValue.TOEIC },
+  { value: CategoryQuestionValue.IELTS, label: CategoryQuestionValue.IELTS },
+];
 
 export enum TypeQuestionValue {
   SelectOne = "SELECT_ONE",

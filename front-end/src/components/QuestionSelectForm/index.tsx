@@ -3,6 +3,7 @@ import images from "config/images";
 import { useState } from "react";
 import Select, { components } from "react-select";
 import useStyles, { customSelectStyle } from "./styles";
+import QuestionForm from "modules/Question/Form/QuestionForm";
 
 export interface CustomOption {
   readonly value: number;
@@ -44,12 +45,6 @@ const CustomOptions = (props) => {
   );
 };
 
-const renderQuestion = (type: number) => {
-  switch (type) {
-    default:
-      return null;
-  }
-};
 const QuestionSelectForm = () => {
   const classes = useStyles();
   const [type, setType] = useState(0);
@@ -73,7 +68,9 @@ const QuestionSelectForm = () => {
         onChange={handleChangeQuestionType}
         defaultValue={questionTypeOption[0]}
       />
-      <div className={classes.questionContainer}>{renderQuestion(type)}</div>
+      <div className={classes.questionContainer}>
+        <QuestionForm />
+      </div>
     </Grid>
   );
 };

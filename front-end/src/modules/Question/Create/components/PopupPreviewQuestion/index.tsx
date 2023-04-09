@@ -1,7 +1,7 @@
 import { Dialog } from "@material-ui/core";
 import { TypeQuestionValue } from "models/question";
 import { useState } from "react";
-import { Question } from "../../models";
+import { IQuestionFormItem } from "models/question";
 import DropdownSelectPreview from "./DropdownSelectPreview";
 import FillInTheGapPreview from "./FillInTheGapPreview";
 import MatchingPreview from "./MatchingPreview";
@@ -11,27 +11,27 @@ import useStyles from "./styles";
 
 interface PopupPreviewQuestionProps {
   open: boolean;
-  question: Question;
+  question: IQuestionFormItem;
   onClose: Function;
 }
 
 const PopupPreviewQuestion = (props: PopupPreviewQuestionProps) => {
   const { open, question, onClose } = props;
   const classes = useStyles();
-  const [showFeedback, setShowFeedback] = useState(false)
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const renderPreviewQuestion = () => {
     switch (question.questionType) {
       case TypeQuestionValue.SelectOne:
-        return <SelectOnePreview question={question} showFeedback={showFeedback}/>;
+        return <SelectOnePreview question={question} showFeedback={showFeedback} />;
       case TypeQuestionValue.SelectMany:
-        return <SelectManyPreview question={question} showFeedback={showFeedback}/>;
+        return <SelectManyPreview question={question} showFeedback={showFeedback} />;
       case TypeQuestionValue.Matching:
-        return <MatchingPreview question={question} showFeedback={showFeedback}/>;
+        return <MatchingPreview question={question} showFeedback={showFeedback} />;
       case TypeQuestionValue.DropdownSelect:
-        return <DropdownSelectPreview question={question} showFeedback={showFeedback}/>;
+        return <DropdownSelectPreview question={question} showFeedback={showFeedback} />;
       case TypeQuestionValue.FillInTheGaps:
-        return <FillInTheGapPreview question={question} showFeedback={showFeedback}/>;
+        return <FillInTheGapPreview question={question} showFeedback={showFeedback} />;
       case TypeQuestionValue.Essay:
         return;
       default:

@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import { Answer } from "modules/Question/Create/models";
+import { IAnswer } from "models/question";
 import Editor from "./Editor";
 import useStyles from "./styles";
 
@@ -10,7 +10,7 @@ interface CreateGapAnswerInputProps {
   onChangeQuestion: any;
   question: any;
   className: string;
-  answer: Answer[];
+  answer: IAnswer[];
   onChangeAnswer: Function;
 }
 

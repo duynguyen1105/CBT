@@ -1,4 +1,4 @@
-import { Answer } from "modules/Question/Create/models";
+import { IAnswer } from "models/question";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import EditorToolbar, { createAnswer, formats, redoChange, removeAnswer, undoChange } from "./EditorToolbar";
@@ -9,7 +9,7 @@ interface EditorProps {
   question: any;
   className: string;
   onChangeAnswer: Function;
-  answer: Answer[];
+  answer: IAnswer[];
 }
 
 export const Editor = (props: EditorProps) => {

@@ -2,13 +2,13 @@ import { Grid } from "@material-ui/core";
 import { Fragment, useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import JsxParser from "react-jsx-parser";
-import { Question } from "../../../models";
+import { IQuestionFormItem } from "models/question";
 import DraggableElement from "./DraggableElement";
 import useStyles from "./styles";
 
 interface MatchingPreviewProps {
-  question: Question;
-  showFeedback: boolean
+  question: IQuestionFormItem;
+  showFeedback: boolean;
 }
 
 const removeFromList = (list, index) => {

@@ -41,8 +41,9 @@ export default makeStyles(() =>
     },
     timeLimit: {
       paddingLeft: 20,
-      display: "flex",
-      flexDirection: "row",
+      display: "grid",
+      gridTemplateColumns: "100px 100px 1fr",
+      gap: 10,
       alignItems: "center",
       "& >p": {
         fontWeight: 700,
@@ -56,9 +57,6 @@ export default makeStyles(() =>
       border: "1px solid #BDBDBD",
       borderRadius: 5,
       textAlign: "center",
-      marginLeft: 20,
-      marginRight: 10,
-      width: "80px !important",
       overflow: "hidden",
       "& > .MuiInputBase-root": {
         border: "none",
@@ -72,10 +70,8 @@ export default makeStyles(() =>
     scoreRow: {
       paddingLeft: 20,
       minWidth: 500,
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
+      display: "grid",
+      gridTemplateColumns: "300px 200px",
       "& >p": {
         fontWeight: 700,
         fontSize: 15,
@@ -108,9 +104,9 @@ export default makeStyles(() =>
     passWordRow: {
       paddingLeft: 20,
       minWidth: 300,
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-between",
+      display: "grid",
+      gridTemplateColumns: "100px 250px",
+      gap: 10,
       alignItems: "center",
       "& >p": {
         fontWeight: 700,
