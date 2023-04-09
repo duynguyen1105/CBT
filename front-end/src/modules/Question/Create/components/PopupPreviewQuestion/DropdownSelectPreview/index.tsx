@@ -1,16 +1,16 @@
 import { Grid, MenuItem, Select, Typography } from "@material-ui/core";
 import { Fragment, useEffect, useState } from "react";
 import JsxParser from "react-jsx-parser";
-import { Question } from "../../../models";
+import { IQuestionFormItem } from "models/question";
 import useStyles from "./styles";
 
 interface DropdownSelectPreviewProps {
-  question: Question;
-  showFeedback: boolean
+  question: IQuestionFormItem;
+  showFeedback: boolean;
 }
 
 const DropdownSelectPreview = (props: DropdownSelectPreviewProps) => {
-  const { question,showFeedback } = props;
+  const { question, showFeedback } = props;
   const classes = useStyles();
   const [questionContent, setQuestionContent] = useState("");
   // const [listsAnswer, setListAnswer] = useState([{}]);
@@ -34,7 +34,6 @@ const DropdownSelectPreview = (props: DropdownSelectPreviewProps) => {
 
   return (
     <Fragment>
-      
       <Grid item md={12}>
         <JsxParser bindings={{ classes }} components={{ Select, MenuItem, Grid, Typography }} jsx={questionContent} />
       </Grid>

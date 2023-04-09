@@ -20,7 +20,7 @@ import { IQuestionState } from "store/reducers/question";
 import * as actionsQuestion from "store/reducers/question/actionTypes";
 import { headerOption } from "./models";
 import useStyles from "./styles";
-import { Question } from "models/question";
+import { IQuestionListItem } from "models/question";
 import * as questionServices from "services/question";
 import * as actionGlobal from "store/reducers/global/actionTypes";
 import { listQuestionCategory, listQuestionType } from "models/question";
@@ -33,7 +33,7 @@ const QuestionList = () => {
 
   const questionProps: IQuestionState = useSelector((state: reducerType) => state.question);
 
-  const [dataList, setDataList] = useState<Question[]>([]);
+  const [dataList, setDataList] = useState<IQuestionListItem[]>([]);
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [total, setTotal] = useState(dataList.length);
 

@@ -1,16 +1,16 @@
 import { Grid, TextField, Typography } from "@material-ui/core";
 import { Fragment, useEffect, useState } from "react";
 import JsxParser from "react-jsx-parser";
-import { Question } from "../../../models";
+import { IQuestionFormItem } from "models/question";
 import useStyles from "./styles";
 
 interface FillInTheGapPreviewProps {
-  question: Question;
-  showFeedback: boolean
+  question: IQuestionFormItem;
+  showFeedback: boolean;
 }
 
 const FillInTheGapPreview = (props: FillInTheGapPreviewProps) => {
-  const { question,showFeedback } = props;
+  const { question, showFeedback } = props;
   const classes = useStyles();
   const [questionContent, setQuestionContent] = useState("");
   // const [listsAnswer, setListAnswer] = useState([{}]);

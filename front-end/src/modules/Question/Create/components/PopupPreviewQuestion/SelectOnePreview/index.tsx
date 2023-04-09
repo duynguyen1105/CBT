@@ -1,11 +1,12 @@
 import { Collapse, FormControl, FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { Question } from "../../../models";
+import { IQuestionFormItem } from "models/question";
+
 import useStyles from "./styles";
 
 interface SelectOnePreviewProps {
-  question: Question;
-  showFeedback: boolean
+  question: IQuestionFormItem;
+  showFeedback: boolean;
 }
 
 const SelectOnePreview = (props: SelectOnePreviewProps) => {
@@ -13,23 +14,23 @@ const SelectOnePreview = (props: SelectOnePreviewProps) => {
   const classes = useStyles();
 
   return (
-      <FormControl component="fieldset">
-        <div dangerouslySetInnerHTML={{ __html: question.questionContent }}></div>
-        <RadioGroup aria-label="question" name="question-detail" value={null} className={classes.answers}>
-          {question.answer.map((answer, index) => {
-            return (
-              <div key={index}>
-                <FormControlLabel control={<Radio checked={answer.isCorrect} color="primary" />} label={<div dangerouslySetInnerHTML={{ __html: answer.content }}></div>} />
-                <Collapse className={classes.feedback} in={showFeedback}>
-                  <Alert severity={answer.isCorrect ? "success" : "error"}>
-                    <div dangerouslySetInnerHTML={{ __html: answer.feedback }}></div>
-                  </Alert>
-                </Collapse>
-              </div>
-            );
-          })}
-        </RadioGroup>
-      </FormControl>
+    <FormControl component="fieldset">
+      <div dangerouslySetInnerHTML={{ __html: question.questionContent }}></div>
+      <RadioGroup aria-label="question" name="question-detail" value={null} className={classes.answers}>
+        {question.answer.map((answer, index) => {
+          return (
+            <div key={index}>
+              <FormControlLabel control={<Radio checked={answer.isCorrect} color="primary" />} label={<div dangerouslySetInnerHTML={{ __html: answer.content }}></div>} />
+              <Collapse className={classes.feedback} in={showFeedback}>
+                <Alert severity={answer.isCorrect ? "success" : "error"}>
+                  <div dangerouslySetInnerHTML={{ __html: answer.feedback }}></div>
+                </Alert>
+              </Collapse>
+            </div>
+          );
+        })}
+      </RadioGroup>
+    </FormControl>
   );
 };
 

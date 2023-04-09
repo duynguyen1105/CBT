@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Typography } from "@material-ui/core";
+import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Typography } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import DateTimePickerCustom from "components/DateTimePickerCustom";
 import Inputs from "components/Inputs";
@@ -76,9 +76,9 @@ const SettingTab = () => {
               />
             </div>
             <div className={classes.timeLimit}>
-              <p>Time Limit</p>
-              <Inputs fullwidth={false} className={classes.smallInput} {...register("timeLimit")} errorMessage={errors?.timeLimit?.message} />
-              <p>Minutes</p>
+              <Typography>Time Limit</Typography>
+              <Inputs className={classes.smallInput} fullwidth={false} {...register("timeLimit")} errorMessage={errors?.timeLimit?.message} />
+              <Typography>Minutes</Typography>
             </div>
           </AccordionDetails>
         </Accordion>
@@ -87,24 +87,24 @@ const SettingTab = () => {
             <Typography className={classes.heading}>Score</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div className={classes.scoreContent}>
-              <div className={classes.scoreRow}>
-                <p>Maximum score :</p>
-                <Inputs fullwidth={false} className={classes.smallInput} {...register("maxScore")} errorMessage={errors?.maxScore?.message} />
-              </div>
-              <div className={classes.scoreRow}>
-                <p>Score method:</p>
+            <Grid container className={classes.scoreContent}>
+              <Grid item container className={classes.scoreRow}>
+                <Typography>Maximum score :</Typography>
+                <Inputs className={classes.smallInput} {...register("maxScore")} errorMessage={errors?.maxScore?.message} />
+              </Grid>
+              <Grid className={classes.scoreRow}>
+                <Typography>Score method:</Typography>
                 <Controller name="scoreMethod" control={control} render={({ field }) => <Select {...field} options={scoreMethodOptions} placeholder="Select an option" />} />
-              </div>
-              <div className={classes.scoreRow}>
-                <p>Minimum score require :</p>
-                <Inputs fullwidth={false} {...register("minScoreRequire")} errorMessage={errors?.minScoreRequire?.message} />
-              </div>
-              <div className={classes.scoreRow}>
-                <p>Number of Submissions Limit :</p>
-                <Inputs fullwidth={false} {...register("submissionLimit")} errorMessage={errors?.submissionLimit?.message} />
-              </div>
-            </div>
+              </Grid>
+              <Grid className={classes.scoreRow}>
+                <Typography>Minimum score require :</Typography>
+                <Inputs className={classes.smallInput} {...register("minScoreRequire")} errorMessage={errors?.minScoreRequire?.message} />
+              </Grid>
+              <Grid className={classes.scoreRow}>
+                <Typography>Number of Submissions Limit :</Typography>
+                <Inputs className={classes.smallInput} {...register("submissionLimit")} errorMessage={errors?.submissionLimit?.message} />
+              </Grid>
+            </Grid>
           </AccordionDetails>
         </Accordion>
         <Accordion expanded={expanded.includes("displayOptions")} onChange={handleChange("displayOptions")}>
@@ -168,8 +168,8 @@ const SettingTab = () => {
           </AccordionSummary>
           <AccordionDetails>
             <div className={classes.passWordRow}>
-              <p>Password&nbsp;:</p>
-              <Inputs showEyes autoComplete="new-password" type="password" fullwidth={false} {...register("password")} errorMessage={errors?.password?.message} />
+              <Typography>Password&nbsp;:</Typography>
+              <Inputs showEyes autoComplete="new-password" type="password" {...register("password")} errorMessage={errors?.password?.message} />
             </div>
           </AccordionDetails>
         </Accordion>

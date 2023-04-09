@@ -10,26 +10,16 @@ const Setting: FC = () => {
   return (
     <Box style={{ paddingTop: 12 }}>
       <AccordionDetails className={classes.generalContent}>
-        <Inputs
-          name="title"
-          title="Title"
-          placeholder="Enter Test title here..."
-        />
-        <InputsRichtext
-          className="description"
-          onChange={() => {}}
-          name="description"
-          title="Description"
-          value=""
-        />
+        <Inputs name="title" title="Title" placeholder="Enter Test title here..." />
+        <InputsRichtext className="description" onChange={() => {}} name="description" title="Description" value="" />
       </AccordionDetails>
 
       <AccordionDetails className={classes.timeContent}>
         <div className={classes.generalContent}>
           <p>Time</p>
           <div style={{ display: "flex", gap: 20 }}>
-            <DateTimePickerCustom name="startTime" label="Begin:" />
-            <DateTimePickerCustom name="endTime" label="End:" />
+            {/* <DateTimePickerCustom name="startTime" label="Begin:" />
+            <DateTimePickerCustom name="endTime" label="End:" /> */}
           </div>
         </div>
       </AccordionDetails>
@@ -38,3 +28,4 @@ const Setting: FC = () => {
 };
 
 export default Setting;
+

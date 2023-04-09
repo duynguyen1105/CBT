@@ -5,7 +5,7 @@ import Inputs from "components/Inputs";
 import InputsRichtext from "components/InputsRichtext";
 import Images from "config/images";
 import produce from "immer";
-import { Answer } from "modules/Question/Create/models";
+import { IAnswer } from "models/question";
 import { useState } from "react";
 import useStyles from "./styles";
 //popupDeleteProps
@@ -13,13 +13,13 @@ interface PopupEditAnswerProps {
   onClickSuccess?: Function;
   onClickCancel?: Function;
   open: boolean;
-  answer: Answer;
+  answer: IAnswer;
 }
 
 const PopupEditAnswer = (props: PopupEditAnswerProps) => {
   const { onClickSuccess, onClickCancel, open, answer } = props;
   const classes = useStyles();
-  const [answerContent, setAnswerContent] = useState<Answer>(answer);
+  const [answerContent, setAnswerContent] = useState<IAnswer>(answer);
   // useEffect(() => {
   //   setAnswerContent(answer)
   // }, [answer])
